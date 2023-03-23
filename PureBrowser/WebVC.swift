@@ -11,6 +11,12 @@ class WebVC: UIViewController {
     
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var titleLabel: UILabel!
+    
+    var content: String = "" {
+        didSet {
+            textView.text = content
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

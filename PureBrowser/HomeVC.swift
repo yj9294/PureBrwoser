@@ -183,6 +183,8 @@ extension HomeVC: UITextFieldDelegate {
         dismissSettingAction()
         let vc = WebVC.loadStoryBoard()
         vc.title = "Privacy Policy"
+        vc.content = """
+"""
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
     }
@@ -191,6 +193,9 @@ extension HomeVC: UITextFieldDelegate {
         dismissSettingAction()
         let vc = WebVC.loadStoryBoard()
         vc.title = "Terms of Use"
+        vc.content = """
+
+"""
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
     }
