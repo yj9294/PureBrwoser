@@ -28,6 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 )
         }
         FirebaseApp.configure()
+        GADHelper.share.requestRemoteConfig()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -50,12 +51,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
-        NotificationCenter.default.post(name: .launching, object: nil)
         if AppEnterbackground {
             FirebaseUtil.log(event: .openHot)
         }
+        if let vc = rootVC?.presentedViewController {
+            vc.dismiss(animated: true)
+        }
         
         AppEnterbackground = false
+        NotificationCenter.default.post(name: .launching, object: nil)
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {

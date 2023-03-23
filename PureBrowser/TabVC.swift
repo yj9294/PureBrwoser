@@ -8,9 +8,42 @@
 import UIKit
 
 class TabVC: UIViewController {
+    
+    @IBOutlet weak var adView: GADNativeView!
+    var willAppear: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(forName: .nativeUpdate, object: nil, queue: .main) { [weak self] noti in
+            if let ad = noti.object as? NativeADModel, self?.willAppear == true {
+                if Date().timeIntervalSince1970 - (GADHelper.share.tabNativeAdImpressionDate ?? Date(timeIntervalSinceNow: -11)).timeIntervalSince1970 > 10 {
+                    self?.adView.nativeAd = ad.nativeAd
+                    GADHelper.share.tabNativeAdImpressionDate = Date()
+                } else {
+                    NSLog("[ad] 10s tab 原生广告刷新或数据填充间隔.")
+                }
+            } else {
+                self?.adView.nativeAd = nil
+            }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        willAppear = false
+        GADHelper.share.close(.native)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        willAppear = true
+        
+        GADHelper.share.load(.interstitial)
+        GADHelper.share.load(.native)
+        FirebaseUtil.log(event: .tabShow)
+        
     }
 
 }
@@ -27,12 +60,7 @@ extension TabVC {
         
         FirebaseUtil.log(event: .tabNew, params: ["lig": "tab"])
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        FirebaseUtil.log(event: .tabShow)
-    }
+
 }
 
 extension TabVC: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {

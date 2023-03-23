@@ -7,6 +7,8 @@
 
 import UIKit
 
+var rootVC: UIViewController? = nil
+
 class RootVC: UITabBarController {
 
     override func viewDidLoad() {
@@ -19,6 +21,8 @@ class RootVC: UITabBarController {
             guard let self = self else {return}
             self.selectedIndex = 1
         }
+        
+        rootVC = self
         
         FirebaseUtil.log(property: .local)
         FirebaseUtil.log(event: .open)
