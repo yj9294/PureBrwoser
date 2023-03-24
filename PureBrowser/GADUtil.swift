@@ -139,8 +139,6 @@ extension GADHelper {
             NSLog("[AD] [LIMIT] clickTime: \(clickTime+1) total: \(adConfig?.clickTimes ?? 0)")
             if isADLimited {
                 NSLog("[AD] 用戶超限制。")
-                self.clean(.all)
-                self.close(.all)
                 return
             }
         }

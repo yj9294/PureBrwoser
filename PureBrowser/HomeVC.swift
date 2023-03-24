@@ -175,7 +175,7 @@ extension HomeVC: UITextFieldDelegate {
     
     @IBAction func shareAction() {
         dismissSettingAction()
-        var url = "https://itunes.apple.com/cn/app/id"
+        var url = "https://itunes.apple.com/cn/app/id6446673810"
         if !BrowserUtil.shared.item.isNavigation, let text = BrowserUtil.shared.item.webView.url?.absoluteString {
             url = text
         }
@@ -199,7 +199,7 @@ extension HomeVC: UITextFieldDelegate {
     
     @IBAction func rateAction() {
         dismissSettingAction()
-        if let url = URL(string: "https://itunes.apple.com/cn/app/id") {
+        if let url = URL(string: "https://itunes.apple.com/cn/app/id6446673810") {
             UIApplication.shared.open(url)
         }
     }
@@ -232,7 +232,9 @@ extension HomeVC: UITextFieldDelegate {
             Task{
                 if !Task.isCancelled {
                     try await Task.sleep(nanoseconds: 1_000_000_000)
-                    self.alert("Clean Successful.")
+                    if let rootVC = rootVC as? UITabBarController, rootVC.selectedIndex == 1 {
+                        self.alert("Clean Successful.")
+                    }
                 }
             }
         }
