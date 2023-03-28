@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import WebKit
 import MobileCoreServices
+import AppTrackingTransparency
 
 class HomeVC: UIViewController {
     
@@ -52,6 +53,10 @@ class HomeVC: UIViewController {
         observerViewStatus()
         
         FirebaseUtil.log(event: .homeShow)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            ATTrackingManager.requestTrackingAuthorization { _ in
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
