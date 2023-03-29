@@ -29,7 +29,7 @@
 		C7AD67AB29B85C1C007FD186 /* WebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AD67AA29B85C1C007FD186 /* WebVC.swift */; };
 		C7AD67AD29B868B5007FD186 /* CleanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AD67AC29B868B4007FD186 /* CleanVC.swift */; };
 		C7AD67BC29B87B59007FD186 /* FirebaseUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AD67BB29B87B59007FD186 /* FirebaseUtil.swift */; };
-		C7AD67BE29B87E2E007FD186 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7AD67BD29B87E2D007FD186 /* GoogleService-Info.plist */; };
+		C7D90D0129CC6C02000F128B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7D90D0029CC6C02000F128B /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,7 +52,7 @@
 		C7AD67AA29B85C1C007FD186 /* WebVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebVC.swift; sourceTree = "<group>"; };
 		C7AD67AC29B868B4007FD186 /* CleanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanVC.swift; sourceTree = "<group>"; };
 		C7AD67BB29B87B59007FD186 /* FirebaseUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUtil.swift; sourceTree = "<group>"; };
-		C7AD67BD29B87E2D007FD186 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C7D90D0029CC6C02000F128B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +91,6 @@
 			isa = PBXGroup;
 			children = (
 				C772BFA229B0C9CF00519901 /* UI+Extension.swift */,
-				C7AD67BD29B87E2D007FD186 /* GoogleService-Info.plist */,
 				C7AD67A629B72ECF007FD186 /* BrowserUtil.swift */,
 				C7AD67BB29B87B59007FD186 /* FirebaseUtil.swift */,
 				C76EE96829C4677C00B8B2B2 /* GADUtil.swift */,
@@ -107,6 +106,7 @@
 				C7AD67AA29B85C1C007FD186 /* WebVC.swift */,
 				C7AD67AC29B868B4007FD186 /* CleanVC.swift */,
 				C772BF9329B0C4A600519901 /* Assets.xcassets */,
+				C7D90D0029CC6C02000F128B /* GoogleService-Info.plist */,
 				C772BF9529B0C4A600519901 /* LaunchScreen.storyboard */,
 				C772BF9829B0C4A600519901 /* Info.plist */,
 			);
@@ -185,7 +185,7 @@
 			files = (
 				C76EE97029C4741300B8B2B2 /* GADConfig.json in Resources */,
 				C772BF9729B0C4A600519901 /* LaunchScreen.storyboard in Resources */,
-				C7AD67BE29B87E2E007FD186 /* GoogleService-Info.plist in Resources */,
+				C7D90D0129CC6C02000F128B /* GoogleService-Info.plist in Resources */,
 				C772BF9429B0C4A600519901 /* Assets.xcassets in Resources */,
 				C772BF9229B0C4A400519901 /* Main.storyboard in Resources */,
 			);
@@ -355,11 +355,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 59CN4J44AC;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PureBrowser/Info.plist;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Please allow access to your activity tracking to provide personalized push services and reduce interference caused by irrelevant services.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -372,8 +373,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.testbird.PureBrowser;
+				PRODUCT_BUNDLE_IDENTIFIER = com.puree.browser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -388,11 +390,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 59CN4J44AC;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PureBrowser/Info.plist;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Please allow access to your activity tracking to provide personalized push services and reduce interference caused by irrelevant services.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -405,8 +408,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.testbird.PureBrowser;
+				PRODUCT_BUNDLE_IDENTIFIER = com.puree.browser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;

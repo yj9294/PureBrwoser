@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import WebKit
 import MobileCoreServices
+import AppTrackingTransparency
 
 class HomeVC: UIViewController {
     
@@ -59,6 +60,10 @@ class HomeVC: UIViewController {
         
         GADHelper.share.load(.interstitial)
         GADHelper.share.load(.native)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            ATTrackingManager.requestTrackingAuthorization { _ in
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -208,6 +213,28 @@ extension HomeVC: UITextFieldDelegate {
         dismissSettingAction()
         let vc = WebVC.loadStoryBoard()
         vc.title = "Privacy Policy"
+        vc.content = """
+Please read this policy carefully before using or accessing our services.
+Information collection
+When you download an application or use an application, website, or service, we will only receive standard non personal information typically provided by web browsers, such as browser type, language preferences, recommended websites, and the date and time of each visitor's request.
+Your name, phone number, or email address.
+We will collect your device ID.
+We will not collect your specific location information. We will not save your access records and logs.
+Information usage
+To update and maintain our applications.
+Used to maintain our products, including performing updates, protection, and troubleshooting, as well as providing support
+Used to contact you when necessary
+Information sharing
+We may collaborate with third-party service providers,
+Such third-party service providers may collect information, which may include personal information, in accordance with their own terms of service, privacy policies, and other applicable policies.
+You acknowledge and agree that we are not responsible for the privacy practices or other behavior of any third-party websites, services, or providers that may be used or enabled in the application.
+Children's Privacy
+Our products and services are not intended for use by persons under the age of seventeen (17) and we ask that such people not provide personal information through our websites, services or applications.
+Update
+We may change this privacy policy from time to time. All changes will be reflected on this page. If you do not want to allow us to change the use of your personal information. You can stop using our websites and applications.
+Contact us
+ming1997317@outlook.com
+"""
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
     }
@@ -216,6 +243,17 @@ extension HomeVC: UITextFieldDelegate {
         dismissSettingAction()
         let vc = WebVC.loadStoryBoard()
         vc.title = "Terms of Use"
+        vc.content = """
+Use of the application
+1.  You are not allowed to post any illegal remarks using our app
+2. You agree to receive our automatic updates and other services
+3. You may not use our applications for unauthorized commercial purposes, nor may you use our applications and services for illegal purposes.".
+4. We will not retain your access log information, and you accept that we are not responsible for the content you access.
+Update
+We may update these terms of use on this page.
+Contact us
+ming1997317@outlook.com
+"""
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
     }

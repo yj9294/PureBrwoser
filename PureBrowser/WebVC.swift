@@ -11,10 +11,13 @@ class WebVC: UIViewController {
     
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var titleLabel: UILabel!
+    
+    var content: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.titleLabel.text = title
+        textView.text = content
     }
  
     @IBAction func backAction() {
