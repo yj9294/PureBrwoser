@@ -13,6 +13,11 @@ class CleanVC: UIViewController {
     
     var handle: (()->Void)? = nil
     
+    var timer: Timer? = nil
+    
+    var progress = 0.0
+    var duration = 15.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,13 +25,31 @@ class CleanVC: UIViewController {
         
         BrowserUtil.shared.clean(from: self)
         starAnimation()
+        GADHelper.share.load(.interstitial)
+        GADHelper.share.load(.native)
         Task {
             if !Task.isCancelled {
                 try await Task.sleep(nanoseconds: 2_000_000_000)
-                self.stopAnimation()
-                self.dismiss(animated: true)
-                FirebaseUtil.log(event: .cleanAlert)
-                self.handle?()
+                
+                self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(loadingAD), userInfo: nil, repeats: true)
+            }
+        }
+    }
+    
+    @objc func loadingAD() {
+        self.progress += 0.01 / duration
+        if GADHelper.share.isLoaded(.interstitial) {
+            self.duration = 0.1
+        }
+        if self.progress > 1.0 {
+            self.timer?.invalidate()
+            GADHelper.share.show(.interstitial, from: self) { _ in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    self.stopAnimation()
+                    self.dismiss(animated: true)
+                    FirebaseUtil.log(event: .cleanAlert)
+                    self.handle?()
+                }
             }
         }
     }
