@@ -182,10 +182,10 @@
                                 <rect key="frame" x="0.0" y="169" width="393" height="540"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_icon" translatesAutoresizingMaskIntoConstraints="NO" id="tyR-JT-st1">
-                                        <rect key="frame" x="154.66666666666666" y="320" width="84" height="84"/>
+                                        <rect key="frame" x="154.66666666666666" y="204" width="84" height="84"/>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z7s-vu-MKz">
-                                        <rect key="frame" x="16" y="136" width="361" height="164"/>
+                                        <rect key="frame" x="16" y="20" width="361" height="164"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UNH-DK-94R">
                                                 <rect key="frame" x="0.0" y="0.0" width="54" height="50"/>
@@ -375,7 +375,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E1q-hD-vwT" customClass="GADNativeView" customModule="PureBrowser" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="20" width="361" height="76"/>
+                                        <rect key="frame" x="16" y="444" width="361" height="76"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ad_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Ywd-gh-Vy3">
                                                 <rect key="frame" x="0.0" y="0.0" width="361" height="76"/>
@@ -398,7 +398,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8hA-8Q-3am">
-                                                <rect key="frame" x="237" y="21.666666666666657" width="20" height="12"/>
+                                                <rect key="frame" x="237" y="21.666666666666629" width="20" height="12"/>
                                                 <color key="backgroundColor" red="0.0" green="0.84705882352941175" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="20" id="KI8-Ex-fy4"/>
@@ -468,11 +468,11 @@
                                     <constraint firstAttribute="trailing" secondItem="z7s-vu-MKz" secondAttribute="trailing" constant="16" id="1WH-kT-ik3"/>
                                     <constraint firstItem="tyR-JT-st1" firstAttribute="centerX" secondItem="vaU-Hj-LKN" secondAttribute="centerX" id="6IB-Af-Rwz"/>
                                     <constraint firstItem="E1q-hD-vwT" firstAttribute="leading" secondItem="vaU-Hj-LKN" secondAttribute="leading" constant="16" id="Ag0-wa-3Wa"/>
-                                    <constraint firstItem="z7s-vu-MKz" firstAttribute="top" secondItem="E1q-hD-vwT" secondAttribute="bottom" constant="40" id="F3g-11-q8t"/>
                                     <constraint firstItem="tyR-JT-st1" firstAttribute="top" secondItem="z7s-vu-MKz" secondAttribute="bottom" constant="20" id="M1I-Lg-D58"/>
-                                    <constraint firstItem="E1q-hD-vwT" firstAttribute="top" secondItem="vaU-Hj-LKN" secondAttribute="top" constant="20" id="SpB-rP-3EV"/>
+                                    <constraint firstItem="z7s-vu-MKz" firstAttribute="top" secondItem="vaU-Hj-LKN" secondAttribute="top" constant="20" id="YbV-zB-Elj"/>
                                     <constraint firstItem="z7s-vu-MKz" firstAttribute="leading" secondItem="vaU-Hj-LKN" secondAttribute="leading" constant="16" id="bAr-jt-lvV"/>
                                     <constraint firstAttribute="trailing" secondItem="E1q-hD-vwT" secondAttribute="trailing" constant="16" id="n8u-cY-27B"/>
+                                    <constraint firstAttribute="bottom" secondItem="E1q-hD-vwT" secondAttribute="bottom" constant="20" id="zqw-Uj-DRq"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="da8-et-YV4">

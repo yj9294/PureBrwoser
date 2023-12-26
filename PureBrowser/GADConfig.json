@@ -1,7 +1,14 @@
 {
     "showTimes": 30,
     "clickTimes": 5,
-    "ads": [{
+    "ads": [
+        {
+                "key": "open",
+                "value": [{
+                    "theAdPriority": 1,
+                    "theAdID": "ca-app-pub-7899750230777142/4864503775"
+                }]
+            },{
             "key": "interstitial",
             "value": [{
                 "theAdPriority": 1,

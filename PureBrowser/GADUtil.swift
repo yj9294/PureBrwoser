@@ -55,8 +55,6 @@ class GADHelper: NSObject {
     /// 广告位加载模型
     let ads:[ADLoadModel] = ADPosition.allCases.map { p in
         ADLoadModel(position: p)
-    }.filter { m in
-        m.position != .all
     }
     
     // native ad impression date
@@ -126,8 +124,10 @@ extension GADHelper {
         if status == .show {
             if isADLimited {
                 NSLog("[AD] 用戶超限制。")
-                self.clean(.all)
-                self.close(.all)
+                ADPosition.allCases.forEach {
+                    self.clean($0)
+                    self.close($0)
+                }
                 return
             }
             let showTime = limit?.showTimes ?? 0
@@ -172,15 +172,17 @@ extension GADHelper {
     func show(_ position: ADPosition, from vc: UIViewController? = nil , completion: @escaping (ADBaseModel?)->Void) {
         // 超限需要清空广告
         if isADLimited {
-            clean(.all)
+            ADPosition.allCases.forEach({
+                clean($0)
+            })
         }
         let loadAD = ads.filter {
             $0.position == position
         }.first
         switch position {
-        case .interstitial:
+        case .interstitial, .open:
             /// 有廣告
-            if let ad = loadAD?.loadedArray.first as? InterstitialADModel, !AppEnterbackground, !isADLimited {
+            if let ad = loadAD?.loadedArray.first as? FullScreenADModel, !AppEnterbackground, !isADLimited {
                 ad.impressionHandler = { [weak self, loadAD] in
                     loadAD?.impressionDate = Date()
                     self?.add(.show)
@@ -239,48 +241,27 @@ extension GADHelper {
     
     /// 清除缓存 针对loadedArray数组
     func clean(_ position: ADPosition) {
-        switch position {
-        case .all:
-            ads.filter{
-                $0.position.isNativeAD
-            }.forEach {
-                $0.clean()
-            }
-        default:
-            let loadAD = ads.filter{
-                $0.position == position
-            }.first
-            loadAD?.clean()
-        }
+        let loadAD = ads.filter{
+            $0.position == position
+        }.first
+        loadAD?.clean()
     }
     
     /// 关闭正在显示的广告（原生，插屏）针对displayArray
     func close(_ position: ADPosition) {
-        switch position {
-        case .all:
-            ads.forEach {
-                $0.closeDisplay()
-            }
-        default:
-            ads.filter{
-                $0.position == position
-            }.first?.closeDisplay()
-        }
-        if position == .native || position == .all {
+        ads.filter{
+            $0.position == position
+        }.first?.closeDisplay()
+        if position == .native {
             NotificationCenter.default.post(name: .nativeUpdate, object: nil)
         }
     }
     
     /// 展示
     func display(_ position: ADPosition) {
-        switch position {
-        case .all:
-            break
-        default:
-            ads.filter {
-                $0.position == position
-            }.first?.display()
-        }
+        ads.filter {
+            $0.position == position
+        }.first?.display()
     }
     
     func dismiss() {
@@ -329,11 +310,15 @@ class ADBaseModel: NSObject, Identifiable {
     /// 當前廣告model
     var model: ADModel?
     /// 廣告位置
-    var position: ADPosition = .all
+    var position: ADPosition = .interstitial
     
     init(model: ADModel?) {
         super.init()
         self.model = model
+    }
+    
+    deinit {
+        NSLog("[Memory] (\(position.rawValue)) \(self) 💧💧💧.")
     }
 }
 
@@ -367,7 +352,7 @@ struct ADLimit: Codable {
 }
 
 enum ADPosition: String, CaseIterable {
-    case all, native, interstitial
+    case native, interstitial, open
 
     var isNativeAD: Bool {
         switch self {
@@ -377,18 +362,12 @@ enum ADPosition: String, CaseIterable {
             return false
         }
     }
-    
-    var isInterstitialAd: Bool {
-        if self == .all {
-            return false
-        }
-        return !self.isNativeAD
-    }
+
 }
 
 class ADLoadModel: NSObject {
     /// 當前廣告位置類型
-    var position: ADPosition = .all
+    var position: ADPosition = .interstitial
     /// 當前正在加載第幾個 ADModel
     var preloadIndex: Int = 0
     /// 是否正在加載中
@@ -474,10 +453,13 @@ extension ADLoadModel {
         
         isPreloadingAd = true
         var ad: ADBaseModel? = nil
-        if position.isNativeAD {
+        switch position {
+        case .native:
             ad = NativeADModel(model: array[preloadIndex])
-        } else if position.isInterstitialAd {
+        case .interstitial:
             ad = InterstitialADModel(model: array[preloadIndex])
+        case .open:
+            ad = OpenADModel(model: array[preloadIndex])
         }
         ad?.position = position
         ad?.loadAd { [weak ad] result, error in
@@ -555,8 +537,7 @@ extension Date {
     }
 }
 
-
-class InterstitialADModel: ADBaseModel {
+class FullScreenADModel: ADBaseModel {
     /// 關閉回調
     var closeHandler: (() -> Void)?
     var autoCloseHandler: (()->Void)?
@@ -565,13 +546,12 @@ class InterstitialADModel: ADBaseModel {
     
     /// 是否點擊過，用於拉黑用戶
     var isClicked: Bool = false
-    
+}
+
+
+class InterstitialADModel: FullScreenADModel {
     /// 插屏廣告
     var interstitialAd: GADInterstitialAd?
-    
-    deinit {
-        NSLog("[Memory] (\(position.rawValue)) \(self) 💧💧💧.")
-    }
 }
 
 extension InterstitialADModel {
@@ -609,6 +589,67 @@ extension InterstitialADModel {
 }
 
 extension InterstitialADModel : GADFullScreenContentDelegate {
+    func adDidRecordImpression(_ ad: GADFullScreenPresentingAd) {
+        loadedDate = Date()
+        impressionHandler?()
+    }
+    
+    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        NSLog("[AD] (\(self.position.rawValue)) didFailToPresentFullScreenContentWithError ad FAILED for id \(self.model?.theAdID ?? "invalid id")")
+        if !AppEnterbackground {
+            closeHandler?()
+        }
+    }
+    
+    func adWillDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+        closeHandler?()
+    }
+    
+    func adDidRecordClick(_ ad: GADFullScreenPresentingAd) {
+        clickHandler?()
+    }
+}
+
+class OpenADModel: FullScreenADModel {
+    /// 插屏廣告
+    var openAd: GADAppOpenAd?
+}
+
+extension OpenADModel {
+    public override func loadAd(completion: ((_ result: Bool, _ error: String) -> Void)?) {
+        loadedHandler = completion
+        loadedDate = nil
+        GADAppOpenAd.load(withAdUnitID: model?.theAdID ?? "", request: GADRequest(), orientation: .portrait) { [weak self] ad, error in
+            guard let self = self else { return }
+            if let error = error {
+                NSLog("[AD] (\(self.position.rawValue)) load ad FAILED for id \(self.model?.theAdID ?? "invalid id")")
+                self.loadedHandler?(false, error.localizedDescription)
+                return
+            }
+            NSLog("[AD] (\(self.position.rawValue)) load ad SUCCESSFUL for id \(self.model?.theAdID ?? "invalid id") ✅✅✅✅")
+            self.openAd = ad
+            self.openAd?.fullScreenContentDelegate = self
+            self.loadedDate = Date()
+            self.loadedHandler?(true, "")
+        }
+    }
+    
+    override func present(from vc: UIViewController? = nil) {
+        if let vc = vc {
+            openAd?.present(fromRootViewController: vc)
+        } else if let keyWindow = UIApplication.shared.windows.filter({$0.isKeyWindow}).first, let rootVC = keyWindow.rootViewController {
+            openAd?.present(fromRootViewController: rootVC)
+        }
+    }
+    
+    override func dismiss() {
+        if let vc = rootVC?.presentedViewController {
+            vc.dismiss(animated: true)
+        }
+    }
+}
+
+extension OpenADModel : GADFullScreenContentDelegate {
     func adDidRecordImpression(_ ad: GADFullScreenPresentingAd) {
         loadedDate = Date()
         impressionHandler?()

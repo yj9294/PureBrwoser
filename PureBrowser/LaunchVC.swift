@@ -16,7 +16,7 @@ class LaunchVC: UIViewController {
     var progress = 0.0 {
         didSet {
             if progress > 1.0 {
-                GADHelper.share.show(.interstitial) { _ in
+                GADHelper.share.show(.open) { _ in
                     if self.progress >= 1.0 {
                         self.launched()
                     }
@@ -53,6 +53,7 @@ extension LaunchVC {
         launch()
         GADHelper.share.load(.interstitial)
         GADHelper.share.load(.native)
+        GADHelper.share.load(.open)
     }
     
     func launched() {
@@ -70,7 +71,7 @@ extension LaunchVC {
             perform(#selector(launch), with: nil, afterDelay: 0.01)
         }
         
-        if isShow, GADHelper.share.isLoaded(.interstitial) {
+        if isShow, GADHelper.share.isLoaded(.open) {
             duration = 0.1
             isShow = false
         }
